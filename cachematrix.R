@@ -12,7 +12,7 @@ makeCacheMatrix <- function(x = matrix()) {
     #This method (setMatrix) will set the dimensions of the matrix. This function basically behaves as a 
     #'constructor method with arguments' in Object Oriented Programming terms
     setMatrix <- function(n){
-      x <<- matrix(nrow = n, ncol = n) # creates a nxn matrix (= squared)
+      x <<- matrix(nrow = n, ncol = n) #creates a n x n matrix (= squared)
       inverseMatrix <<- NULL
     }
     
@@ -34,8 +34,23 @@ makeCacheMatrix <- function(x = matrix()) {
 }
 
 
-## Write a short comment describing this function
+#The following function is specifically meant for retrieving or computing the inverse of the original matrix 
+# "x"
 
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
-}
+cacheSolve <- function(x = matrix(), ...) {
+    
+    #First retrieve the current value for the inverseMatrix of "x"
+    inverseMatrix <- x$getInverseMatrix()
+    
+    #If the inverse is already known, return this inverse as the result
+    if(!is.null(inverseMatrix)){
+      message ("getting cached data")
+      return(inverseMatrix) #The 'return' statement not only returns the result, but also makes R exit the function 'cacheSolve'
+      }
+    
+    #If the inverse wasn't known yet (=NULL) then compute and return it
+    original_matrix <- x$getMatrix() #get the original matrix
+    inverse <- solve(original_matrix) #compute the inverse
+    x$setInverseMatrix(inverse) #set the inverseMatrix of 'x' to the computed inverse
+    inverse #return the inverse matrix
+}    
